@@ -3,12 +3,14 @@
   <url>
     <loc>https://go.growwstacks.com/</loc>
     <lastmod>2026-02-18</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://go.growwstacks.com/services/n8n-automation/</loc>
     <lastmod>2026-02-18</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- Add each new page here as you create it -->
+  <!-- Add new pages here as you create them -->
 </urlset>
