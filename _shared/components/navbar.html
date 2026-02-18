@@ -1,0 +1,24 @@
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a href="/" class="nav-logo">
+        <span class="nav-logo-fallback">{{SITE.name}}<span>»</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/#services">Services</a></li>
+        <li><a href="/#process">How We Work</a></li>
+        <li><a href="/#cases">Case Studies</a></li>
+        <li><a href="/#industries">Industries</a></li>
+        <li><a href="/#testimonials">Reviews</a></li>
+      </ul>
+    </div>
+    <div class="nav-right">
+      <a href="{{SITE.phoneTel}}" class="nav-phone">📞 {{SITE.phone}}</a>
+      <a href="#consultation" class="btn btn-primary nav-cta">Free Consultation <span class="btn-arrow">→</span></a>
+    </div>
+    <button class="nav-mobile-toggle" aria-label="Open navigation menu"
+            onclick="document.querySelector('.nav-links').classList.toggle('show')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
