@@ -1,1 +1,96 @@
 
+<form id="consultForm">
+	<!-- Hidden fields for tracking -->
+	<input type="hidden" name="page_url" id="pageUrl" class="form-hidden">
+	<input type="hidden" name="page_title" value="Homepage" class="form-hidden">
+	<input type="hidden" name="submitted_at" id="submittedAt" class="form-hidden">
+
+	<div class="form-row">
+		<div class="form-group">
+			<label for="nameInput">Full Name *</label>
+			<input type="text" name="name" id="nameInput" placeholder="Your name" required>
+		</div>
+		<div class="form-group">
+			<label for="companyInput">Company Name</label>
+			<input type="text" name="company" id="companyInput" placeholder="Your company">
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="form-group">
+			<label for="emailInput">Email *</label>
+			<input type="email" name="email" id="emailInput" placeholder="your@email.com" required>
+		</div>
+		<div class="form-group">
+			<label for="phoneInput">Phone *</label>
+			<input type="tel" name="phone" id="phoneInput" placeholder="+91 XXXXX XXXXX" required>
+		</div>
+	</div>
+	<div class="form-group">
+		<label>What are you looking for?</label>
+		<select name="service" required>
+			<option value="">Select a service</option>
+			<option value="ai-agents">AI Agents / Agentic AI</option>
+			<option value="voice-ai">Voice AI Agent</option>
+			<option value="chatbot">AI Chatbot</option>
+			<option value="make-automation">Make.com Automation</option>
+			<option value="n8n-automation">n8n Automation</option>
+			<option value="power-automate">Power Automate / Power Apps</option>
+			<option value="crm-automation">CRM Integration</option>
+			<option value="custom-integration">Custom API Integration</option>
+			<option value="not-sure">Not Sure — Need Guidance</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label for="messageInput">Tell us about your project</label>
+		<textarea name="message" id="messageInput" placeholder="What processes do you want to automate? What's your biggest bottleneck?"></textarea>
+	</div>
+	<button type="submit" class="form-submit" id="submitBtn">Get My Free Automation Audit →</button>
+	<p class="form-note">🔒 Your information is secure. We never share your data.</p>
+</form>
+
+<script>
+	// Attach submit handler after component is injected
+	(function() {
+		function attach() {
+			var form = document.getElementById('consultForm');
+			if (!form) return false;
+			if (form.__attached) return true;
+			form.__attached = true;
+
+			form.addEventListener('submit', async function(e) {
+				e.preventDefault();
+				var btn = document.getElementById('submitBtn');
+				if (btn) { btn.textContent = 'Sending...'; btn.disabled = true; }
+
+				// Set hidden fields
+				var pageUrl = document.getElementById('pageUrl');
+				var submittedAt = document.getElementById('submittedAt');
+				if (pageUrl) pageUrl.value = window.location.href;
+				if (submittedAt) submittedAt.value = new Date().toISOString();
+
+				var formData = new FormData(form);
+				var data = {};
+				formData.forEach(function(value, key) { data[key] = value; });
+
+				try {
+					var webhookUrl = '{{SITE.formWebhookUrl}}';
+					await fetch(webhookUrl, {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify(data)
+					});
+				} catch (err) {
+					console.log('Webhook error:', err);
+				}
+
+				window.location.href = '{{SITE.thankYouPage}}';
+			});
+
+			return true;
+		}
+
+		// Try immediately and again shortly after (components may be injected async)
+		if (!attach()) setTimeout(attach, 300);
+	})();
+</script>
+

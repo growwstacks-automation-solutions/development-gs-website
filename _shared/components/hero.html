@@ -1,0 +1,135 @@
+<section class="hero">
+  <div class="hero-shape-1"></div>
+  <div class="hero-shape-2"></div>
+  <div class="hero-shape-3"></div>
+
+  <div class="container">
+    <div class="hero-inner">
+
+      <!-- ================= LEFT CONTENT ================= -->
+      <div>
+        <div class="hero-announce">
+          <span class="hero-announce-badge">New</span>
+          Now building Voice AI Agents & Agentic AI Systems
+        </div>
+
+        <h1>
+          We Build <span class="highlight">AI Agents</span> & Automations That Run Your Business 24/7
+        </h1>
+
+        <p class="hero-desc">
+          From voice AI that handles phone calls to workflows that eliminate 40+ hours of manual work weekly — 
+          GrowwStacks turns your repetitive processes into intelligent, self-running systems.
+        </p>
+
+        <div class="hero-ctas">
+          <a href="#consultation" class="btn btn-accent">
+            Get Free Automation Audit <span class="btn-arrow">→</span>
+          </a>
+
+          <a href="#cases" class="btn btn-outline">
+            See Client Results
+          </a>
+        </div>
+
+        <div class="hero-trust">
+          <div class="hero-trust-item">
+            <span class="hero-trust-icon trust-green">✓</span>
+            Make.com Platinum Partner
+          </div>
+
+          <div class="hero-trust-item">
+            <span class="hero-trust-icon trust-amber">★</span>
+            {{SITE.stats.googleRating}} Google Rating
+          </div>
+
+          <div class="hero-trust-item">
+            <span class="hero-trust-icon trust-sky">🌐</span>
+            {{SITE.stats.projects}} Projects Delivered
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= RIGHT IMAGE ================= -->
+      <div class="hero-visual">
+
+        <div class="hero-card">
+
+          <!-- HERO IMAGE CAROUSEL -->
+          <div class="hero-carousel">
+
+            <img
+              src=""
+              data-image-key="HERO.carousel.0"
+              alt="Make Platinum Partner Award"
+              class="carousel-img active"
+              loading="eager"
+            >
+
+            <img
+              src=""
+              data-image-key="HERO.carousel.1"
+              alt="GrowwStacks Team Celebration"
+              class="carousel-img"
+              loading="lazy"
+            >
+
+          </div>
+
+        </div>
+
+        <!-- FLOATING CARDS -->
+
+        <div class="hero-float hero-float-1">
+          <div class="hero-float-icon float-green">🤖</div>
+          <div>
+            <div style="font-size:12px;color:var(--gray-400)">AI Agents</div>
+            <strong>Active 24/7</strong>
+          </div>
+        </div>
+
+        <div class="hero-float hero-float-2">
+          <div class="hero-float-icon float-peach">📞</div>
+          <div>
+            <div style="font-size:12px;color:var(--gray-400)">Voice AI</div>
+            <strong>98% Answer Rate</strong>
+          </div>
+        </div>
+
+        <div class="hero-float hero-float-3">
+          <div class="hero-float-icon float-lavender">⚡</div>
+          <div>
+            <div style="font-size:12px;color:var(--gray-400)">Automation</div>
+            <strong>60% Cost Saved</strong>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  (function() {
+    function initHeroCarousel(){
+      const carousel = document.querySelector('.hero-carousel');
+      if (!carousel) return;
+      const slides = carousel.querySelectorAll('.carousel-img');
+      if (!slides || slides.length === 0) return;
+      let current = Array.from(slides).findIndex(s => s.classList.contains('active'));
+      if (current < 0) { current = 0; slides[0].classList.add('active'); }
+
+      // clear previous interval if any
+      if (carousel._interval) { clearInterval(carousel._interval); }
+      carousel._interval = setInterval(() => {
+        slides[current].classList.remove('active');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('active');
+      }, 3500);
+    }
+
+    // Run after a short delay so component injection has completed
+    setTimeout(initHeroCarousel, 250);
+  })();
+</script>
