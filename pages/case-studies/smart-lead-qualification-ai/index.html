@@ -37,13 +37,175 @@
 <link rel="stylesheet" href="../../_shared/global.css">
 <link rel="stylesheet" href="../case-studies.css">
 
+<!-- ═══ Page-level patches (fixes issues without touching global files) ═══ -->
+<style>
+/* ── FAQ FIXES: case-studies.js uses .open, global.css uses .active ─────── */
+/* Support BOTH so either JS works */
+.faq-item.open .faq-a,
+.faq-item.active .faq-a      { max-height: 600px; }
+.faq-item.open .faq-arrow,
+.faq-item.active .faq-arrow  { background: var(--cs-accent-pale,#fff0e6); color: var(--cs-accent,#e8590c); transform: rotate(180deg); }
+.faq-item.open .faq-q,
+.faq-item.active .faq-q      { color: var(--cs-accent,#e8590c); }
+
+/* ── FAQ layout: match the polished style from global.css ──────────────── */
+.cs-faq { padding: 80px 0; background: var(--white,#fff); }
+.cs-faq h2 {
+  text-align: center; font-size: clamp(28px,3vw,38px);
+  font-weight: 800; margin-bottom: 8px; color: var(--dark,#0f1117);
+}
+.cs-faq-subtitle {
+  text-align: center; font-size: 16px; color: var(--gray-500,#64748b);
+  margin-bottom: 48px;
+}
+.faq-inner { max-width: 800px; margin: 0 auto; }
+.faq-item { border-bottom: 1px solid var(--gray-200,#e5e7eb); }
+.faq-q {
+  padding: 22px 0; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--font-display,'Bricolage Grotesque',serif);
+  font-weight: 600; font-size: 17px; color: var(--dark,#0f1117);
+  background: none; border: none; width: 100%; text-align: left;
+  line-height: 1.4; gap: 16px; transition: color .2s;
+}
+.faq-q:hover { color: var(--cs-accent,#e8590c); }
+.faq-icon { display: none; } /* hide old + icon — replaced by arrow */
+.faq-arrow {
+  width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+  background: var(--gray-100,#f3f4f6);
+  display: flex; align-items: center; justify-content: center;
+  transition: all .3s; font-size: 16px; color: var(--gray-500,#6b7280);
+}
+.faq-a {
+  max-height: 0; overflow: hidden;
+  transition: max-height .45s cubic-bezier(.4,0,.2,1);
+}
+.faq-a-inner {
+  padding: 0 0 24px;
+  font-size: 15px; color: var(--gray-600,#4b5563); line-height: 1.75;
+}
+.faq-a-inner p { margin-bottom: 0; }
+.faq-a-inner strong { color: var(--dark,#0f1117); }
+
+/* ── VIDEO / MEDIA BOX ────────────────────────────────────────────────── */
+.cs-hero-media {
+  margin-top: 48px;
+  border-radius: 16px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,.15);
+  border: 4px solid var(--white,#fff);
+  background: #000;
+  /* Enforce 16:9 aspect ratio */
+  position: relative;
+  padding-top: 56.25%; /* 16:9 */
+  height: 0;
+}
+.cs-hero-media .yt-facade,
+.cs-hero-media iframe {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  min-height: unset; /* override global min-height */
+}
+.cs-hero-media .yt-facade img,
+.cs-hero-media .yt-facade picture {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+}
+
+/* ── TOOL ICON BADGES ─────────────────────────────────────────────────── */
+.cs-hero-logo img { border-radius: 4px; object-fit: contain; }
+.cs-tool-tag img  { border-radius: 3px; object-fit: contain; }
+
+/* ── INLINE NAVBAR (fallback while page-builder loads) ───────────────── */
+#gs-navbar:empty .nav-fallback { display: flex; }
+.nav-fallback {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  height: 72px;
+  background: rgba(255,255,255,.96); backdrop-filter: blur(16px);
+  border-bottom: 1px solid #e5e7eb;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+  font-family: var(--font-body,'Plus Jakarta Sans',sans-serif);
+}
+.nav-fallback-logo {
+  font-family: var(--font-display,'Bricolage Grotesque',serif);
+  font-weight: 800; font-size: 22px; color: #1a6e30;
+  text-decoration: none;
+}
+.nav-fallback-logo span { color: #9ca3af; font-weight: 400; font-size: 13px; margin-left: 3px; }
+.nav-fallback-links { display: flex; gap: 28px; list-style: none; }
+.nav-fallback-links a { font-size: 14px; font-weight: 500; color: #4b5563; text-decoration: none; }
+.nav-fallback-links a:hover { color: #e8590c; }
+.nav-fallback-cta {
+  background: #e8590c; color: #fff !important;
+  padding: 10px 22px; border-radius: 9999px;
+  font-size: 14px; font-weight: 700; text-decoration: none;
+  transition: background .2s;
+}
+.nav-fallback-cta:hover { background: #f4722b !important; }
+@media(max-width:768px){
+  .nav-fallback-links { display: none; }
+}
+
+/* ── INLINE FOOTER (fallback while page-builder loads) ───────────────── */
+.footer-fallback {
+  background: #0f1117; color: rgba(255,255,255,.5);
+  padding: 48px 24px 28px;
+  font-family: var(--font-body,'Plus Jakarta Sans',sans-serif);
+}
+.footer-fallback-grid {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+  margin-bottom: 40px;
+}
+.footer-fallback-logo {
+  font-family: var(--font-display,'Bricolage Grotesque',serif);
+  font-weight: 800; font-size: 22px; color: #fff; margin-bottom: 12px;
+}
+.footer-fallback-brand p { font-size: 14px; line-height: 1.7; max-width: 280px; }
+.footer-fallback-col h4 {
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: rgba(255,255,255,.3); margin-bottom: 14px;
+}
+.footer-fallback-col a {
+  display: block; font-size: 14px; color: rgba(255,255,255,.55);
+  margin-bottom: 10px; text-decoration: none; transition: color .2s;
+}
+.footer-fallback-col a:hover { color: #4cbc6b; }
+.footer-fallback-bottom {
+  max-width: 1200px; margin: 0 auto;
+  padding-top: 28px; border-top: 1px solid rgba(255,255,255,.08);
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 13px; flex-wrap: wrap; gap: 12px;
+}
+.footer-fallback-bottom a { color: rgba(255,255,255,.35); margin-left: 14px; text-decoration: none; }
+.footer-fallback-bottom a:hover { color: rgba(255,255,255,.7); }
+@media(max-width:768px){
+  .footer-fallback-grid { grid-template-columns: 1fr 1fr; }
+}
+@media(max-width:480px){
+  .footer-fallback-grid { grid-template-columns: 1fr; }
+}
+</style>
+
 <!-- ═══ Page Tools (for shared JS logo injection) ═══ -->
 <meta name="page-tools" content="make,openai,slack">
 </head>
 <body class="cs-page page-lead-qual">
 
 <!-- ═══ NAVBAR ═══ -->
-<div id="gs-navbar"></div>
+<div id="gs-navbar">
+  <!-- Fallback nav — rendered immediately, replaced by page-builder.js if components exist -->
+  <nav class="nav-fallback" id="nav" aria-label="Main navigation">
+    <a href="/" class="nav-fallback-logo">GrowwStacks<span>»</span></a>
+    <ul class="nav-fallback-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/case-studies/">Case Studies</a></li>
+      <li><a href="/make-automation/">Make.com</a></li>
+      <li><a href="/#consultation">Contact</a></li>
+    </ul>
+    <a href="/#consultation" class="nav-fallback-cta">Free Consultation →</a>
+  </nav>
+</div>
 
 <main>
 
@@ -74,27 +236,34 @@
     <p class="cs-hero-sub">A brand running community and influencer programs was drowning in manual application reviews. We built a ChatGPT-4 powered qualification engine on Make.com that evaluates every Instagram DM and Messenger conversation in real-time, routes qualified leads to the right team via Slack, and delivers program materials through Gmail — cutting screening time by 85% and delivering 550% ROI.</p>
 
     <div class="cs-hero-logos">
-      <!-- Static badges for tools NOT in SITE.tools -->
+      <!-- Static badges with direct Google favicon URLs (no JS dependency) -->
       <div class="cs-hero-logo">
-        <img src="" data-image-key="CASE_STUDIES.smartLeadQualification.toolIcons.manychat" alt="ManyChat" width="20" height="20" loading="lazy"> ManyChat
+        <img src="https://www.google.com/s2/favicons?domain=manychat.com&sz=32" alt="ManyChat" width="20" height="20" loading="lazy"> ManyChat
       </div>
       <div class="cs-hero-logo">
-        <img src="" data-image-key="CASE_STUDIES.smartLeadQualification.toolIcons.gmail" alt="Gmail" width="20" height="20" loading="lazy"> Gmail
+        <img src="https://www.google.com/s2/favicons?domain=gmail.com&sz=32" alt="Gmail" width="20" height="20" loading="lazy"> Gmail
       </div>
-      <!-- Dynamic badges populated from SITE.tools -->
+      <div class="cs-hero-logo">
+        <img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="Make.com" width="20" height="20" loading="lazy"> Make.com
+      </div>
+      <div class="cs-hero-logo">
+        <img src="https://www.google.com/s2/favicons?domain=openai.com&sz=32" alt="ChatGPT" width="20" height="20" loading="lazy"> ChatGPT-4
+      </div>
+      <div class="cs-hero-logo">
+        <img src="https://www.google.com/s2/favicons?domain=slack.com&sz=32" alt="Slack" width="20" height="20" loading="lazy"> Slack
+      </div>
+      <!-- Dynamic badges populated from SITE.tools (if page-builder loads) -->
       <div id="cs-hero-tools" style="display:contents"></div>
     </div>
 
+    <!-- 16:9 aspect-ratio video wrapper -->
     <div class="cs-hero-media">
       <div class="yt-facade" data-video-id="MShhrHfUDaQ" role="button" tabindex="0" aria-label="Play video: Smart Lead Qualification System walkthrough">
-        <picture>
-          <source type="image/webp" srcset="" data-image-key="CASE_STUDIES.smartLeadQualification.videoThumbnail">
-          <img src="" data-image-key="CASE_STUDIES.smartLeadQualification.videoThumbnail"
-               alt="Video walkthrough of the AI-powered lead qualification system using ManyChat, ChatGPT, and Make.com"
-               width="480" height="360"
-               loading="eager" fetchpriority="high"
-               style="width:100%;height:100%;object-fit:cover;">
-        </picture>
+        <img src="https://i.ytimg.com/vi/MShhrHfUDaQ/hqdefault.jpg"
+             alt="Video walkthrough of the AI-powered lead qualification system using ManyChat, ChatGPT, and Make.com"
+             width="480" height="270"
+             loading="eager" fetchpriority="high"
+             style="width:100%;height:100%;object-fit:cover;">
         <div class="yt-facade-play" aria-hidden="true">
           <svg width="68" height="48" viewBox="0 0 68 48"><path d="M66.5 7.7s-.7-4.7-2.8-6.8C60.7-2.1 57.5-2.2 56-2.4 46.6-3 34-3 34-3h0S21.4-3 12-2.4C10.4-2.2 7.3-2.1 4.3 1S.7 7.7.7 7.7 0 13.2 0 18.8v5.2c0 5.5.7 11 .7 11s.7 4.7 2.8 6.8c3 3.1 6.9 3 8.7 3.3C18.5 45.6 34 45.8 34 45.8s12.6 0 22-0.6c1.6-0.2 4.7-0.3 7.7-3.4 2.1-2.1 2.8-6.8 2.8-6.8s.7-5.5.7-11v-5.2c0-5.6-.7-11.1-.7-11.1z" fill="#FF0000"/><path d="M27 33V14l18 9.5z" fill="#FFF"/></svg>
         </div>
@@ -140,17 +309,15 @@
       <!-- ARTICLE -->
       <article class="cs-article">
 
-        <!-- SECTION 1: The Problem -->
         <h2>200+ Applications a Day, and Every One Needed Human Eyes</h2>
         <p>The client — an e-commerce brand running community ambassador and influencer programs — was receiving over 200 applications daily through Instagram DMs and Facebook Messenger. Each one needed to be read, evaluated against qualification criteria (location, audience size, content niche, engagement quality), and either approved, rejected, or flagged for follow-up.</p>
         <p>Their marketing team was spending 2-3 hours every morning just doing initial screening. Qualification standards drifted depending on who was reviewing. Response times stretched to 24-48 hours, and by then, 35% of interested prospects had already moved on — either losing interest or signing up with a competitor's program. The tools were disconnected too: ManyChat captured the conversations, but someone had to manually copy the relevant data into Slack for the team and then compose individual Gmail follow-ups with program materials. It was slow, inconsistent, and expensive.</p>
 
-        <!-- SECTION 2: The Solution -->
         <h2>An AI Agent That Reads, Evaluates, and Routes — In Seconds</h2>
         <p>We built an intelligent qualification pipeline that connects ManyChat's conversation capture directly to ChatGPT-4 for evaluation, with Make.com orchestrating the entire workflow. The moment a prospect completes a conversation flow on Instagram or Messenger, the system evaluates their responses against the brand's specific qualification criteria, assigns a score, and takes action — all without a human touching it.</p>
 
         <div class="cs-img-block">
-          <img src="" data-image-key="CASE_STUDIES.smartLeadQualification.screenshot1"
+          <img src="https://ik.imagekit.io/r2zdlyze2o/Ai%20Store%20Screenshots/Ai%20store%20Screenshots/2.%20Smart%20Lead%20Qualification%20System%20(AI)/Untitled%20design%20(40).png?updatedAt=1771396727476&tr=w-800,q-80"
                alt="System architecture showing ManyChat capturing Instagram and Messenger conversations, flowing through ChatGPT-4 evaluation, and routing to Slack and Gmail via Make.com"
                loading="lazy" width="800" height="450">
           <div class="cs-img-caption">End-to-end system architecture: ManyChat → ChatGPT-4 → Make.com → Slack + Gmail</div>
@@ -158,7 +325,6 @@
 
         <p>Qualified prospects automatically receive detailed program materials via Gmail (with attachments), the team gets a rich Slack notification with the prospect's profile and qualification summary, and the ManyChat thread updates so the prospect knows their application is being processed. Unqualified prospects get a polite decline message. The entire cycle takes seconds, not days.</p>
 
-        <!-- SECTION 3: How It Works -->
         <h3>How the Qualification Pipeline Works</h3>
         <p>The system operates as a four-stage pipeline, each stage handing off to the next automatically:</p>
         <ol>
@@ -169,7 +335,7 @@
         </ol>
 
         <div class="cs-img-block">
-          <img src="" data-image-key="CASE_STUDIES.smartLeadQualification.screenshot2"
+          <img src="https://ik.imagekit.io/r2zdlyze2o/Ai%20Store%20Screenshots/Ai%20store%20Screenshots/2.%20Smart%20Lead%20Qualification%20System%20(AI)/MAke%20workflow%20.png?updatedAt=1771396727092&tr=w-800,q-80"
                alt="Make.com automation scenario showing the complete workflow from ManyChat webhook through ChatGPT evaluation to Slack and Gmail routing"
                loading="lazy" width="800" height="450">
           <div class="cs-img-caption">The Make.com scenario handling webhook ingestion, AI evaluation, conditional routing, and multi-channel delivery</div>
@@ -179,7 +345,6 @@
           <p>The ChatGPT-4 evaluation prompt was the key engineering challenge. We designed it to not just check boxes, but to understand conversational nuance — detecting genuine enthusiasm vs. casual browsing, identifying prospects who match the brand aesthetic even if their follower count is modest, and flagging incomplete responses for follow-up rather than outright rejection. This single prompt took 3 iterations to get the qualification accuracy to 92%.</p>
         </div>
 
-        <!-- SECTION 4: Key Capabilities -->
         <h2>What Makes This System Different</h2>
         <div class="cs-features">
           <div class="cs-feature">
@@ -214,34 +379,30 @@
           </div>
         </div>
 
-        <!-- SECTION 5: Technical Build -->
         <h2>Inside the Technical Architecture</h2>
         <p>The Make.com scenario is the nervous system of this build. It receives ManyChat webhooks containing structured conversation data (custom fields mapped for each qualification attribute), passes the full payload to the ChatGPT-4 API with a carefully engineered system prompt, parses the JSON response for qualification decisions and scores, then fans out to multiple downstream actions based on conditional logic.</p>
 
         <div class="cs-img-block">
-          <img src="" data-image-key="CASE_STUDIES.smartLeadQualification.screenshot3"
+          <img src="https://ik.imagekit.io/r2zdlyze2o/Ai%20Store%20Screenshots/Ai%20store%20Screenshots/2.%20Smart%20Lead%20Qualification%20System%20(AI)/ManyChat%20conversation%20flow.png?updatedAt=1771396727138&tr=w-800,q-80"
                alt="ManyChat conversation flow designer showing the structured qualification questions collecting location, audience size, and content niche data"
                loading="lazy" width="800" height="450">
           <div class="cs-img-caption">ManyChat conversation flow with structured qualification questions and webhook data transmission</div>
         </div>
 
         <p>We chose Make.com over Zapier for this build specifically because of the conditional routing requirements. The scenario needed to evaluate multiple conditions simultaneously — qualification score thresholds, response completeness flags, geography filters — and route to different notification combinations. Make.com's visual branching made this straightforward; in Zapier, this would have required multiple separate Zaps with fragmented logic.</p>
-
         <p>The ChatGPT-4 integration uses a structured JSON response format with explicit fields for decision (qualified/not_qualified/needs_info), confidence_score (0-100), key_strengths (array), concerns (array), and recommended_action. This structured output made downstream routing deterministic — no ambiguous free-text parsing.</p>
 
         <div class="cs-img-block">
-          <img src="" data-image-key="CASE_STUDIES.smartLeadQualification.screenshot4"
+          <img src="https://ik.imagekit.io/r2zdlyze2o/Ai%20Store%20Screenshots/Ai%20store%20Screenshots/2.%20Smart%20Lead%20Qualification%20System%20(AI)/Untitled%20design%20(41).png?updatedAt=1771396728168&tr=w-800,q-80"
                alt="Slack notification format showing the rich prospect profile with qualification score, strengths, and recommended next steps delivered to the marketing team"
                loading="lazy" width="800" height="450">
           <div class="cs-img-caption">Rich Slack notifications with prospect profiles, AI qualification scores, and recommended next steps</div>
         </div>
 
-        <!-- SECTION 6: Results Before vs After -->
         <h2>Results: From Manual Bottleneck to Autonomous Pipeline</h2>
         <p><strong>Before:</strong> 200+ daily applications required 2-3 hours of manual review by senior marketing staff. Qualification criteria varied by reviewer. Response times averaged 24-48 hours. 35% of qualified prospects dropped off before receiving program information. Team members copied data between ManyChat, Slack, and Gmail manually. Cost: approximately $18K/month in team hours plus lost opportunity from prospect attrition.</p>
         <p><strong>After:</strong> Every conversation is evaluated by ChatGPT-4 within seconds of completion. Qualified prospects receive program materials via Gmail within 2 minutes. Teams receive Slack notifications with complete context and AI-generated recommendations. ManyChat threads update automatically. Zero manual screening required — the marketing team now spends their time exclusively on personalized outreach to pre-qualified, high-intent prospects.</p>
 
-        <!-- SECTION 7: Who This Is For -->
         <h2>Who Should Build This</h2>
         <p>This system is built for any business that qualifies prospects through conversational channels at volume. That includes e-commerce brands running community or ambassador programs, influencer marketing agencies evaluating creator applications, membership organizations processing enrollment inquiries, SaaS companies qualifying inbound leads through chat, and content creator platforms managing partnership applications. If you're spending more than an hour a day reading and routing conversation-based applications, this pays for itself within the first month.</p>
 
@@ -264,17 +425,20 @@
         <div class="cs-sidebar-card">
           <h4>Tools & Integrations</h4>
           <div class="cs-sidebar-tools" id="cs-sidebar-tools">
-            <span class="cs-tool-tag"><img src="" data-image-key="CASE_STUDIES.smartLeadQualification.toolIcons.manychat" alt="" width="14" height="14" loading="lazy"> ManyChat</span>
-            <span class="cs-tool-tag"><img src="" data-image-key="CASE_STUDIES.smartLeadQualification.toolIcons.gmail" alt="" width="14" height="14" loading="lazy"> Gmail</span>
-            <span class="cs-tool-tag"><img src="" data-image-key="CASE_STUDIES.smartLeadQualification.toolIcons.instagram" alt="" width="14" height="14" loading="lazy"> Instagram</span>
-            <span class="cs-tool-tag"><img src="" data-image-key="CASE_STUDIES.smartLeadQualification.toolIcons.messenger" alt="" width="14" height="14" loading="lazy"> Messenger</span>
+            <span class="cs-tool-tag"><img src="https://www.google.com/s2/favicons?domain=manychat.com&sz=32" alt="" width="14" height="14" loading="lazy"> ManyChat</span>
+            <span class="cs-tool-tag"><img src="https://www.google.com/s2/favicons?domain=gmail.com&sz=32" alt="" width="14" height="14" loading="lazy"> Gmail</span>
+            <span class="cs-tool-tag"><img src="https://www.google.com/s2/favicons?domain=instagram.com&sz=32" alt="" width="14" height="14" loading="lazy"> Instagram</span>
+            <span class="cs-tool-tag"><img src="https://www.google.com/s2/favicons?domain=messenger.com&sz=32" alt="" width="14" height="14" loading="lazy"> Messenger</span>
+            <span class="cs-tool-tag"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=32" alt="" width="14" height="14" loading="lazy"> Make.com</span>
+            <span class="cs-tool-tag"><img src="https://www.google.com/s2/favicons?domain=openai.com&sz=32" alt="" width="14" height="14" loading="lazy"> ChatGPT-4</span>
+            <span class="cs-tool-tag"><img src="https://www.google.com/s2/favicons?domain=slack.com&sz=32" alt="" width="14" height="14" loading="lazy"> Slack</span>
           </div>
         </div>
 
         <div class="cs-sidebar-card">
           <h4>Key Metrics</h4>
           <div class="cs-sidebar-row"><span class="cs-sidebar-label">Screening Time</span><span class="cs-sidebar-value">-85%</span></div>
-          <div class="cs-sidebar-row"><span class="cs-sidebar-label">Response Speed</span><span class="cs-sidebar-value">-95% (mins vs hrs)</span></div>
+          <div class="cs-sidebar-row"><span class="cs-sidebar-label">Response Speed</span><span class="cs-sidebar-value">-95%</span></div>
           <div class="cs-sidebar-row"><span class="cs-sidebar-label">Prospect Drop-off</span><span class="cs-sidebar-value">-60%</span></div>
           <div class="cs-sidebar-row"><span class="cs-sidebar-label">Qualification Accuracy</span><span class="cs-sidebar-value">92%</span></div>
           <div class="cs-sidebar-row"><span class="cs-sidebar-label">Monthly Savings</span><span class="cs-sidebar-value">$15K+</span></div>
@@ -298,91 +462,95 @@
 <section class="cs-faq" id="faq">
   <div class="container">
     <h2>Frequently Asked Questions</h2>
+    <p class="cs-faq-subtitle">Everything you need to know before building an AI-powered qualification system</p>
 
-    <div class="faq-item">
-      <button class="faq-q" aria-expanded="false">
-        <span>How much does it cost to build an AI lead qualification system like this?</span>
-        <span class="faq-icon" aria-hidden="true">+</span>
-      </button>
-      <div class="faq-a">
-        <p><strong>A conversational AI lead qualification system typically costs between $5,000 and $15,000</strong> depending on the number of channels, complexity of qualification criteria, and downstream integrations.<br><br>
+    <div class="faq-inner">
 
-        This specific build — ManyChat + ChatGPT-4 + Make.com + Slack + Gmail — fell in the <strong>$8,000-$10,000 range</strong> with a 2-week delivery timeline. The ongoing cost is minimal: Make.com scenario operations, ChatGPT API calls (roughly $50-$150/month for 200+ daily evaluations), and existing ManyChat subscription.<br><br>
-
-        With $15K+ in monthly savings from eliminated manual screening, the system delivered <strong>550% ROI</strong> and paid for itself within the first 3 weeks.</p>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span>How much does it cost to build an AI lead qualification system like this?</span>
+          <span class="faq-arrow" aria-hidden="true">↓</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            <p><strong>A conversational AI lead qualification system typically costs between $5,000 and $15,000</strong> depending on the number of channels, complexity of qualification criteria, and downstream integrations.<br><br>
+            This specific build — ManyChat + ChatGPT-4 + Make.com + Slack + Gmail — fell in the <strong>$8,000-$10,000 range</strong> with a 2-week delivery timeline. The ongoing cost is minimal: Make.com scenario operations, ChatGPT API calls (roughly $50-$150/month for 200+ daily evaluations), and existing ManyChat subscription.<br><br>
+            With $15K+ in monthly savings from eliminated manual screening, the system delivered <strong>550% ROI</strong> and paid for itself within the first 3 weeks.</p>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="faq-item">
-      <button class="faq-q" aria-expanded="false">
-        <span>Can ChatGPT accurately qualify leads, or does it make too many mistakes?</span>
-        <span class="faq-icon" aria-hidden="true">+</span>
-      </button>
-      <div class="faq-a">
-        <p><strong>With proper prompt engineering, ChatGPT-4 achieves 92% qualification accuracy</strong> — comparable to or better than human reviewers who suffer from fatigue, inconsistency, and subjective bias.<br><br>
-
-        The key is structured prompting: we define explicit qualification criteria, require JSON-formatted responses with confidence scores, and design the AI to flag uncertain cases for human review rather than making binary decisions on borderline prospects. This means the <strong>8% "error" rate</strong> is mostly flagged-for-review cases, not outright mistakes.<br><br>
-
-        Human reviewers in the client's original process showed roughly 15-20% inconsistency between different team members evaluating the same application — so the AI is actually more consistent, not less.</p>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span>Can ChatGPT accurately qualify leads, or does it make too many mistakes?</span>
+          <span class="faq-arrow" aria-hidden="true">↓</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            <p><strong>With proper prompt engineering, ChatGPT-4 achieves 92% qualification accuracy</strong> — comparable to or better than human reviewers who suffer from fatigue, inconsistency, and subjective bias.<br><br>
+            The key is structured prompting: we define explicit qualification criteria, require JSON-formatted responses with confidence scores, and design the AI to flag uncertain cases for human review rather than making binary decisions on borderline prospects. This means the <strong>8% "error" rate</strong> is mostly flagged-for-review cases, not outright mistakes.<br><br>
+            Human reviewers in the client's original process showed roughly 15-20% inconsistency between different team members evaluating the same application — so the AI is actually more consistent, not less.</p>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="faq-item">
-      <button class="faq-q" aria-expanded="false">
-        <span>How long does it take to set up an automated lead qualification pipeline?</span>
-        <span class="faq-icon" aria-hidden="true">+</span>
-      </button>
-      <div class="faq-a">
-        <p><strong>A complete AI lead qualification system takes 2-3 weeks from kickoff to live deployment.</strong> The first week covers ManyChat flow design, qualification criteria definition, and ChatGPT prompt engineering. The second week handles Make.com workflow integration, Slack/Gmail notification setup, and end-to-end testing.<br><br>
-
-        The most time-intensive part is <strong>prompt engineering and iteration</strong> — getting the AI's qualification accuracy above 90% requires testing with real conversation data and typically 3-4 iterations before meeting production standards.<br><br>
-
-        Every project includes 30 days of free support post-launch to fine-tune qualification thresholds based on actual lead quality feedback.</p>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span>How long does it take to set up an automated lead qualification pipeline?</span>
+          <span class="faq-arrow" aria-hidden="true">↓</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            <p><strong>A complete AI lead qualification system takes 2-3 weeks from kickoff to live deployment.</strong> The first week covers ManyChat flow design, qualification criteria definition, and ChatGPT prompt engineering. The second week handles Make.com workflow integration, Slack/Gmail notification setup, and end-to-end testing.<br><br>
+            The most time-intensive part is <strong>prompt engineering and iteration</strong> — getting the AI's qualification accuracy above 90% requires testing with real conversation data and typically 3-4 iterations before meeting production standards.<br><br>
+            Every project includes 30 days of free support post-launch to fine-tune qualification thresholds based on actual lead quality feedback.</p>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="faq-item">
-      <button class="faq-q" aria-expanded="false">
-        <span>What happens if the AI incorrectly rejects a good lead?</span>
-        <span class="faq-icon" aria-hidden="true">+</span>
-      </button>
-      <div class="faq-a">
-        <p><strong>The system is designed to err on the side of inclusion, not exclusion.</strong> Instead of binary qualified/rejected decisions, the AI returns three outcomes: qualified, not qualified, and needs more information. Borderline cases always get routed to the "needs more info" path, triggering a follow-up conversation rather than a rejection.<br><br>
-
-        Additionally, every AI decision includes a <strong>confidence score (0-100)</strong>. Decisions below an 80% confidence threshold are automatically flagged for human review in Slack, with the AI's reasoning attached so a team member can make the final call in seconds.<br><br>
-
-        This safety net means <strong>false rejections are near-zero</strong> — the system only auto-rejects prospects where the AI is 90%+ confident they don't meet criteria.</p>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span>What happens if the AI incorrectly rejects a good lead?</span>
+          <span class="faq-arrow" aria-hidden="true">↓</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            <p><strong>The system is designed to err on the side of inclusion, not exclusion.</strong> Instead of binary qualified/rejected decisions, the AI returns three outcomes: qualified, not qualified, and needs more information. Borderline cases always get routed to the "needs more info" path, triggering a follow-up conversation rather than a rejection.<br><br>
+            Additionally, every AI decision includes a <strong>confidence score (0-100)</strong>. Decisions below an 80% confidence threshold are automatically flagged for human review in Slack, with the AI's reasoning attached so a team member can make the final call in seconds.<br><br>
+            This safety net means <strong>false rejections are near-zero</strong> — the system only auto-rejects prospects where the AI is 90%+ confident they don't meet criteria.</p>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="faq-item">
-      <button class="faq-q" aria-expanded="false">
-        <span>Which types of businesses benefit most from AI-powered lead qualification?</span>
-        <span class="faq-icon" aria-hidden="true">+</span>
-      </button>
-      <div class="faq-a">
-        <p><strong>Any business processing 50+ conversational applications per day</strong> will see immediate ROI from AI qualification. The sweet spot is brands receiving 100-500+ daily inquiries through Instagram, Messenger, WhatsApp, or website chat.<br><br>
-
-        The strongest use cases include <strong>e-commerce brands with ambassador/community programs, influencer marketing agencies, membership organizations, real estate teams qualifying buyer inquiries</strong>, and SaaS companies with high-volume inbound chat leads.<br><br>
-
-        If your team spends more than 1 hour per day reading and routing conversation-based leads, the automation pays for itself within the first month — regardless of industry.</p>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span>Which types of businesses benefit most from AI-powered lead qualification?</span>
+          <span class="faq-arrow" aria-hidden="true">↓</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            <p><strong>Any business processing 50+ conversational applications per day</strong> will see immediate ROI from AI qualification. The sweet spot is brands receiving 100-500+ daily inquiries through Instagram, Messenger, WhatsApp, or website chat.<br><br>
+            The strongest use cases include <strong>e-commerce brands with ambassador/community programs, influencer marketing agencies, membership organizations, real estate teams qualifying buyer inquiries</strong>, and SaaS companies with high-volume inbound chat leads.<br><br>
+            If your team spends more than 1 hour per day reading and routing conversation-based leads, the automation pays for itself within the first month — regardless of industry.</p>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="faq-item">
-      <button class="faq-q" aria-expanded="false">
-        <span>How does AI lead qualification compare to using manual filters or simple chatbot rules?</span>
-        <span class="faq-icon" aria-hidden="true">+</span>
-      </button>
-      <div class="faq-a">
-        <p><strong>Simple chatbot rules (if-then logic) catch about 60% of qualification criteria, while AI evaluation captures 92%+</strong> because it understands context, nuance, and intent — not just keyword matches.<br><br>
-
-        Rule-based chatbots can filter on hard criteria (location, follower count), but they fail on soft criteria: genuine enthusiasm vs. casual browsing, brand aesthetic alignment, content quality signals, and response completeness. They also can't handle <strong>unexpected responses</strong> gracefully — anything outside the decision tree gets stuck or misrouted.<br><br>
-
-        The AI approach costs more upfront ($8K-$15K vs. $1K-$3K for basic chatbot rules), but the <strong>45% higher conversion rate</strong> from qualified-to-enrolled prospects makes the math clear. Better qualification quality means your team talks only to prospects who actually convert.</p>
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">
+          <span>How does AI lead qualification compare to using manual filters or simple chatbot rules?</span>
+          <span class="faq-arrow" aria-hidden="true">↓</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">
+            <p><strong>Simple chatbot rules (if-then logic) catch about 60% of qualification criteria, while AI evaluation captures 92%+</strong> because it understands context, nuance, and intent — not just keyword matches.<br><br>
+            Rule-based chatbots can filter on hard criteria (location, follower count), but they fail on soft criteria: genuine enthusiasm vs. casual browsing, brand aesthetic alignment, content quality signals, and response completeness. They also can't handle <strong>unexpected responses</strong> gracefully — anything outside the decision tree gets stuck or misrouted.<br><br>
+            The AI approach costs more upfront ($8K-$15K vs. $1K-$3K for basic chatbot rules), but the <strong>45% higher conversion rate</strong> from qualified-to-enrolled prospects makes the math clear. Better qualification quality means your team talks only to prospects who actually convert.</p>
+          </div>
+        </div>
       </div>
-    </div>
 
+    </div><!-- /faq-inner -->
   </div>
 </section>
 
@@ -403,7 +571,45 @@
 </main>
 
 <!-- ═══ FOOTER ═══ -->
-<div id="gs-footer"></div>
+<div id="gs-footer">
+  <!-- Fallback footer — rendered immediately, replaced by page-builder.js if components exist -->
+  <footer class="footer-fallback" aria-label="Site footer">
+    <div class="footer-fallback-grid">
+      <div class="footer-fallback-brand">
+        <div class="footer-fallback-logo">GrowwStacks</div>
+        <p>AI Agents, Voice AI & Business Automation for small and mid-market businesses. Make.com Platinum Partner. 500+ clients served globally.</p>
+      </div>
+      <div class="footer-fallback-col">
+        <h4>Services</h4>
+        <a href="/make-automation/">Make.com Automation</a>
+        <a href="/ai-agents/">AI Agents</a>
+        <a href="/voice-ai/">Voice AI</a>
+        <a href="/n8n-automation/">n8n Workflows</a>
+      </div>
+      <div class="footer-fallback-col">
+        <h4>Company</h4>
+        <a href="/case-studies/">Case Studies</a>
+        <a href="/#process">How We Work</a>
+        <a href="/#consultation">Free Consultation</a>
+        <a href="https://www.linkedin.com/company/growwstacks/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+      <div class="footer-fallback-col">
+        <h4>Contact</h4>
+        <a href="mailto:hello@growwstacks.com">hello@growwstacks.com</a>
+        <a href="tel:+919713339155">+91-971-333-9155</a>
+        <a href="https://www.growwstacks.com/privacy-policy">Privacy Policy</a>
+        <a href="https://www.growwstacks.com/terms-condition">Terms of Service</a>
+      </div>
+    </div>
+    <div class="footer-fallback-bottom">
+      <span>© <span id="footer-year">2026</span> GrowwStacks (M TEC Software & Business Automation Pvt. Ltd.)</span>
+      <div>
+        <a href="https://www.growwstacks.com/privacy-policy">Privacy</a>
+        <a href="https://www.growwstacks.com/terms-condition">Terms</a>
+      </div>
+    </div>
+  </footer>
+</div>
 
 <!-- ═══ Structured Data ═══ -->
 <script type="application/ld+json">{
@@ -433,46 +639,95 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How much does it cost to build an AI lead qualification system like this?",
-      "acceptedAnswer": { "@type": "Answer", "text": "A conversational AI lead qualification system typically costs between $5,000 and $15,000 depending on channels, criteria complexity, and integrations. This ManyChat + ChatGPT-4 + Make.com build fell in the $8,000-$10,000 range with 2-week delivery. With $15K+ monthly savings, the system delivered 550% ROI and paid for itself within 3 weeks." }
-    },
-    {
-      "@type": "Question",
-      "name": "Can ChatGPT accurately qualify leads, or does it make too many mistakes?",
-      "acceptedAnswer": { "@type": "Answer", "text": "With proper prompt engineering, ChatGPT-4 achieves 92% qualification accuracy — comparable to or better than human reviewers who show 15-20% inconsistency. The key is structured prompting with explicit criteria, JSON-formatted responses, and confidence scores that flag uncertain cases for human review rather than making binary decisions." }
-    },
-    {
-      "@type": "Question",
-      "name": "How long does it take to set up an automated lead qualification pipeline?",
-      "acceptedAnswer": { "@type": "Answer", "text": "A complete AI lead qualification system takes 2-3 weeks from kickoff to live deployment. The most time-intensive part is prompt engineering — getting AI accuracy above 90% requires testing with real conversation data and typically 3-4 iterations. Every project includes 30 days of free support post-launch." }
-    },
-    {
-      "@type": "Question",
-      "name": "What happens if the AI incorrectly rejects a good lead?",
-      "acceptedAnswer": { "@type": "Answer", "text": "The system uses three outcomes — qualified, not qualified, and needs more information — instead of binary decisions. Borderline cases always get routed to follow-up, not rejection. Decisions below 80% confidence are flagged for human review with the AI's reasoning attached, making false rejections near-zero." }
-    },
-    {
-      "@type": "Question",
-      "name": "Which types of businesses benefit most from AI-powered lead qualification?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Any business processing 50+ conversational applications per day sees immediate ROI. The strongest use cases include e-commerce brands with ambassador programs, influencer marketing agencies, membership organizations, and SaaS companies with high-volume inbound chat leads. If your team spends over 1 hour daily routing conversation-based leads, it pays for itself within the first month." }
-    },
-    {
-      "@type": "Question",
-      "name": "How does AI lead qualification compare to using manual filters or simple chatbot rules?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Simple chatbot rules capture about 60% of qualification criteria while AI evaluation captures 92%+ because it understands context, nuance, and intent. Rule-based chatbots fail on soft criteria like genuine enthusiasm, brand alignment, and unexpected responses. The AI approach costs more upfront but delivers 45% higher conversion rates from qualified prospects." }
-    }
+    { "@type": "Question", "name": "How much does it cost to build an AI lead qualification system like this?", "acceptedAnswer": { "@type": "Answer", "text": "A conversational AI lead qualification system typically costs between $5,000 and $15,000 depending on channels, criteria complexity, and integrations. This ManyChat + ChatGPT-4 + Make.com build fell in the $8,000-$10,000 range with 2-week delivery. With $15K+ monthly savings, the system delivered 550% ROI and paid for itself within 3 weeks." } },
+    { "@type": "Question", "name": "Can ChatGPT accurately qualify leads, or does it make too many mistakes?", "acceptedAnswer": { "@type": "Answer", "text": "With proper prompt engineering, ChatGPT-4 achieves 92% qualification accuracy — comparable to or better than human reviewers who show 15-20% inconsistency. The key is structured prompting with explicit criteria, JSON-formatted responses, and confidence scores that flag uncertain cases for human review." } },
+    { "@type": "Question", "name": "How long does it take to set up an automated lead qualification pipeline?", "acceptedAnswer": { "@type": "Answer", "text": "A complete AI lead qualification system takes 2-3 weeks from kickoff to live deployment. Prompt engineering is the most time-intensive part — getting AI accuracy above 90% requires 3-4 iterations with real conversation data. Every project includes 30 days of free post-launch support." } },
+    { "@type": "Question", "name": "What happens if the AI incorrectly rejects a good lead?", "acceptedAnswer": { "@type": "Answer", "text": "The system uses three outcomes — qualified, not qualified, and needs more information — instead of binary decisions. Decisions below 80% confidence are flagged for human review with the AI's reasoning attached, making false rejections near-zero." } },
+    { "@type": "Question", "name": "Which types of businesses benefit most from AI-powered lead qualification?", "acceptedAnswer": { "@type": "Answer", "text": "Any business processing 50+ conversational applications per day sees immediate ROI. Strongest use cases include e-commerce ambassador programs, influencer agencies, membership organizations, and SaaS inbound chat leads." } },
+    { "@type": "Question", "name": "How does AI lead qualification compare to simple chatbot rules?", "acceptedAnswer": { "@type": "Answer", "text": "Simple chatbot rules catch about 60% of qualification criteria while AI evaluation captures 92%+ because it understands context, nuance, and intent. The AI approach delivers 45% higher conversion rates from qualified prospects." } }
   ]
 }</script>
 
+<!-- ═══ Inline FAQ Accordion (works immediately, without page-builder.js) ═══ -->
+<script>
+(function () {
+  // Sticky nav shadow
+  window.addEventListener('scroll', function () {
+    var nav = document.getElementById('nav');
+    if (nav) nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // FAQ accordion — supports both .open (case-studies.js) and .active (global.css)
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.faq-q');
+    if (!btn) return;
+    var item = btn.closest('.faq-item');
+    if (!item) return;
+    var isOpen = item.classList.contains('open') || item.classList.contains('active');
+
+    // Close all
+    document.querySelectorAll('.faq-item').forEach(function (i) {
+      i.classList.remove('open', 'active');
+      var b = i.querySelector('.faq-q');
+      if (b) b.setAttribute('aria-expanded', 'false');
+    });
+
+    // Open clicked if it was closed
+    if (!isOpen) {
+      item.classList.add('open', 'active');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  });
+
+  // YouTube Lite Facade — click to load
+  document.addEventListener('click', function (e) {
+    var facade = e.target.closest('.yt-facade');
+    if (!facade) return;
+    var videoId = facade.dataset.videoId;
+    if (!videoId) return;
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1';
+    iframe.title = facade.getAttribute('aria-label') || 'YouTube video';
+    iframe.frameBorder = '0';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allowFullscreen = true;
+    iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:inherit;';
+    facade.parentElement.style.position = 'relative';
+    facade.innerHTML = '';
+    facade.appendChild(iframe);
+  });
+
+  // Keyboard support for YouTube facade
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    var facade = document.activeElement && document.activeElement.classList.contains('yt-facade')
+      ? document.activeElement : null;
+    if (facade) { e.preventDefault(); facade.click(); }
+  });
+
+  // Smooth scroll for anchor links
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+    var target = document.querySelector(link.getAttribute('href'));
+    if (!target) return;
+    e.preventDefault();
+    var pos = target.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({ top: pos, behavior: 'smooth' });
+  });
+
+  // Dynamic footer year
+  var fy = document.getElementById('footer-year');
+  if (fy) fy.textContent = new Date().getFullYear();
+})();
+</script>
+
 <!-- ═══ Shared Config + Component Loader ═══ -->
+<!-- These load the real nav/footer components when running on server -->
+<!-- If components are missing, the inline fallbacks above remain visible -->
 <script src="../../_shared/site-config.js"></script>
-<!-- Image Helper (injects images from config) -->
 <script src="../../assets/js/images-helper.js"></script>
-<!-- Page builder (requires SITE / site-config.js loaded first) -->
 <script src="../../_shared/page-builder.js"></script>
-<!-- Case Studies Specific -->
 <script src="../case-studies.js"></script>
 
 </body>
