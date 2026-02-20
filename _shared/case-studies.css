@@ -148,7 +148,7 @@ a { color: inherit; text-decoration: none; }
 .faq-q:hover { color: var(--cs-accent); }
 .faq-icon { font-size: 20px; font-weight: 400; color: var(--cs-accent); flex-shrink: 0; transition: transform .25s; line-height: 1; }
 .faq-q[aria-expanded="true"] .faq-icon { transform: rotate(45deg); }
-.faq-a { display: none; padding: 0 24px 20px; }
+.faq-a { display: none; padding: 0 24px 0px; }
 .faq-a.open { display: block; }
 .faq-a p { font-size: 15px; color: #475569; line-height: 1.75; margin: 0; }
 .faq-a p strong { color: #0f172a; }
@@ -786,7 +786,7 @@ body.page-lead-qual {
 /* ═══════════════════════════════════════════ */
 /* Support BOTH .open (case-studies.js) and .active (global.css) classes */
 .faq-item.open .faq-a,
-.faq-item.active .faq-a      { max-height: 600px; }
+.faq-item.active .faq-a      { max-height: 2000px; }
 .faq-item.open .faq-arrow,
 .faq-item.active .faq-arrow  { background: var(--cs-accent-pale,#fff0e6); color: var(--cs-accent,#e8590c); transform: rotate(180deg); }
 .faq-item.open .faq-q,
@@ -805,7 +805,7 @@ body.page-lead-qual {
 .faq-inner { max-width: 800px; margin: 0 auto; }
 .faq-item { border-bottom: 1px solid var(--gray-200,#e5e7eb); }
 .faq-q {
-  padding: 22px 0; cursor: pointer;
+  padding: 22px 12px; cursor: pointer;
   display: flex; justify-content: space-between; align-items: center;
   font-family: var(--font-display,'Bricolage Grotesque',serif);
   font-weight: 600; font-size: 17px; color: var(--dark,#0f1117);
@@ -821,7 +821,7 @@ body.page-lead-qual {
   transition: all .3s; font-size: 16px; color: var(--gray-500,#6b7280);
 }
 .faq-a {
-  max-height: 0; overflow: hidden;
+  display: block; max-height: 0; overflow: hidden;
   transition: max-height .45s cubic-bezier(.4,0,.2,1);
 }
 .faq-a-inner {
