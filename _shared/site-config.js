@@ -265,7 +265,47 @@ SITE.images = {
   }
 };
 
+// ============================================
+// CASE STUDIES — Detail Page Images
+// Consolidated image URLs for case study pages
+// ============================================
+SITE.caseStudies = {
+  smartLeadQualification: {
+    videoId: 'MShhrHfUDaQ',
+    videoThumbnail: 'https://i.ytimg.com/vi/MShhrHfUDaQ/hqdefault.jpg',
+    screenshot1: 'https://ik.imagekit.io/r2zdlyze2o/Ai%20Store%20Screenshots/Ai%20store%20Screenshots/2.%20Smart%20Lead%20Qualification%20System%20(AI)/Untitled%20design%20(40).png?updatedAt=1771396727476&tr=w-800,q-80',
+    screenshot2: 'https://ik.imagekit.io/r2zdlyze2o/Ai%20Store%20Screenshots/Ai%20store%20Screenshots/2.%20Smart%20Lead%20Qualification%20System%20(AI)/MAke%20workflow%20.png?updatedAt=1771396727092&tr=w-800,q-80',
+    screenshot3: 'https://ik.imagekit.io/r2zdlyze2o/Ai%20Store%20Screenshots/Ai%20store%20Screenshots/2.%20Smart%20Lead%20Qualification%20System%20(AI)/ManyChat%20conversation%20flow.png?updatedAt=1771396727138&tr=w-800,q-80',
+    screenshot4: 'https://ik.imagekit.io/r2zdlyze2o/Ai%20Store%20Screenshots/Ai%20store%20Screenshots/2.%20Smart%20Lead%20Qualification%20System%20(AI)/Untitled%20design%20(41).png?updatedAt=1771396728168&tr=w-800,q-80',
+    toolIcons: {
+      manychat: 'https://www.google.com/s2/favicons?domain=manychat.com&sz=32',
+      gmail: 'https://www.google.com/s2/favicons?domain=gmail.com&sz=32',
+      instagram: 'https://www.google.com/s2/favicons?domain=instagram.com&sz=32',
+      messenger: 'https://www.google.com/s2/favicons?domain=messenger.com&sz=32'
+    }
+  },
+
+  aiFinanceLoanAutomation: {
+    videoId: 'YouAMvn21V4',
+    videoThumbnail: 'https://i.ytimg.com/vi/YouAMvn21V4/hqdefault.jpg',
+    screenshot1: 'https://ik.imagekit.io/r2zdlyze2o/Ai%20Store%20Screenshots/Ai%20store%20Screenshots/3.%20AI-Powered%20Finance%20&%20Loan%20Application%20Automation%20System/AI%20Voice%20Assistant%20%20Dashboard.png?tr=w-800,h-450,q-80&updatedAt=1771396829418',
+    screenshot2: 'https://ik.imagekit.io/r2zdlyze2o/Ai%20Store%20Screenshots/Ai%20store%20Screenshots/3.%20AI-Powered%20Finance%20&%20Loan%20Application%20Automation%20System/N8N%20Workflow%20Automation%20Setup.png?tr=w-800,h-450,q-80&updatedAt=1771396829310',
+    screenshot3: 'https://ik.imagekit.io/r2zdlyze2o/Ai%20Store%20Screenshots/Ai%20store%20Screenshots/3.%20AI-Powered%20Finance%20&%20Loan%20Application%20Automation%20System/VAPI%20Calling%20System%20Configuration.png?tr=w-800,h-450,q-80&updatedAt=1771396830013',
+    screenshot4: 'https://ik.imagekit.io/r2zdlyze2o/Ai%20Store%20Screenshots/Ai%20store%20Screenshots/3.%20AI-Powered%20Finance%20&%20Loan%20Application%20Automation%20System/Airtable%20Loan%20Database%20Management.png?tr=w-800,h-450,q-80&updatedAt=1771396830304',
+    screenshot5: 'https://ik.imagekit.io/r2zdlyze2o/Ai%20Store%20Screenshots/Ai%20store%20Screenshots/3.%20AI-Powered%20Finance%20&%20Loan%20Application%20Automation%20System/Real-time%20Data%20Collection%20Interface.png?tr=w-800,h-450,q-80&updatedAt=1771396830634',
+    screenshot6: 'https://ik.imagekit.io/r2zdlyze2o/Ai%20Store%20Screenshots/Ai%20store%20Screenshots/3.%20AI-Powered%20Finance%20&%20Loan%20Application%20Automation%20System/Loan%20Application%20Analytics%20Dashboard.png?tr=w-800,h-450,q-80&updatedAt=1771396829460',
+    toolIcons: {
+      vapi: 'https://www.google.com/s2/favicons?domain=vapi.ai&sz=32',
+      twilio: 'https://www.google.com/s2/favicons?domain=twilio.com&sz=32'
+    }
+  }
+};
+
 // Backward compatibility: make IMAGES identifier available for existing helpers
 // expose on window for any code that checks window.IMAGES
 window.IMAGES = SITE.images;
 const IMAGES = SITE.images;
+
+// Expose CASE_STUDIES for data-image-key references
+window.CASE_STUDIES = SITE.caseStudies;
+const CASE_STUDIES = SITE.caseStudies;

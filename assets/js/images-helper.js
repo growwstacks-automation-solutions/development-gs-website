@@ -44,12 +44,26 @@ function setupLinksByDataAttribute() {
 }
 
 // Helper function to get image by dot-notation key
-// Example: "HERO.carousel.0" or "PARTNERS.make"
+// Example: "HERO.carousel.0", "PARTNERS.make", "CASE_STUDIES.smartLeadQualification.screenshot1"
+// Supports IMAGES, CASE_STUDIES, and other top-level namespaces
 function getImageByKey(key) {
-  if (!key || typeof IMAGES === 'undefined') return null;
+  if (!key) return null;
   
   const keys = key.split('.');
-  let value = IMAGES;
+  const namespace = keys[0];
+  
+  // Try direct top-level access first (IMAGES, CASE_STUDIES, etc.)
+  let value = window[namespace];
+  
+  // Fallback to SITE.* namespaces
+  if (!value && typeof SITE !== 'undefined' && SITE[namespace]) {
+    value = SITE[namespace];
+  }
+  
+  if (!value) {
+    console.warn('Image namespace not found:', namespace);
+    return null;
+  }
   
   try {
     for (let k of keys) {
