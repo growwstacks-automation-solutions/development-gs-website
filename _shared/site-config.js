@@ -272,7 +272,7 @@ SITE.images = {
 SITE.caseStudies = {
   smartLeadQualification: {
     videoId: 'MShhrHfUDaQ',
-    videoThumbnail: 'https://i.ytimg.com/vi/MShhrHfUDaQ/hqdefault.jpg',
+    videoThumbnail: 'https://i.ytimg.com/vi/MShhrHfUDaQ/maxresdefault.jpg',
     screenshot1: 'https://ik.imagekit.io/r2zdlyze2o/Ai%20Store%20Screenshots/Ai%20store%20Screenshots/2.%20Smart%20Lead%20Qualification%20System%20(AI)/Untitled%20design%20(40).png?updatedAt=1771396727476&tr=w-800,q-80',
     screenshot2: 'https://ik.imagekit.io/r2zdlyze2o/Ai%20Store%20Screenshots/Ai%20store%20Screenshots/2.%20Smart%20Lead%20Qualification%20System%20(AI)/MAke%20workflow%20.png?updatedAt=1771396727092&tr=w-800,q-80',
     screenshot3: 'https://ik.imagekit.io/r2zdlyze2o/Ai%20Store%20Screenshots/Ai%20store%20Screenshots/2.%20Smart%20Lead%20Qualification%20System%20(AI)/ManyChat%20conversation%20flow.png?updatedAt=1771396727138&tr=w-800,q-80',
@@ -281,7 +281,10 @@ SITE.caseStudies = {
       manychat: 'https://www.google.com/s2/favicons?domain=manychat.com&sz=32',
       gmail: 'https://www.google.com/s2/favicons?domain=gmail.com&sz=32',
       instagram: 'https://www.google.com/s2/favicons?domain=instagram.com&sz=32',
-      messenger: 'https://www.google.com/s2/favicons?domain=messenger.com&sz=32'
+      messenger: 'https://www.google.com/s2/favicons?domain=messenger.com&sz=32',
+      make: 'https://www.google.com/s2/favicons?domain=make.com&sz=32',
+      openai: 'https://www.google.com/s2/favicons?domain=openai.com&sz=32',
+      slack: 'https://www.google.com/s2/favicons?domain=slack.com&sz=32'
     }
   },
 

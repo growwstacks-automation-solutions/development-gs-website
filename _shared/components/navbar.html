@@ -5,11 +5,11 @@
         <span class="nav-logo-fallback">{{SITE.name}}<span>»</span></span>
       </a>
       <ul class="nav-links">
-        <li><a href="/#services">Services</a></li>
-        <li><a href="/#process">How We Work</a></li>
-        <li><a href="/#cases">Case Studies</a></li>
-        <li><a href="/#industries">Industries</a></li>
-        <li><a href="/#testimonials">Reviews</a></li>
+        <li><a href="/" data-nav-link="services">Services</a></li>
+        <li><a href="/" data-nav-link="process">How We Work</a></li>
+        <li><a href="/" data-nav-link="case-studies">Case Studies</a></li>
+        <li><a href="/" data-nav-link="industries">Industries</a></li>
+        <li><a href="/" data-nav-link="reviews">Reviews</a></li>
       </ul>
     </div>
     <div class="nav-right">
@@ -21,3 +21,27 @@
     </button>
   </div>
 </nav>
+
+<script>
+// Dynamic navbar link builder — works at any page depth
+(function() {
+  var pathSegments = window.location.pathname.replace(/\/+$/, '').split('/').filter(Boolean);
+  var depth = pathSegments.length;
+  var homePrefix = depth === 0 ? '' : Array(depth).fill('..').join('/') + '/';
+  
+  var linkMap = {
+    'services': homePrefix + 'services/',
+    'process': homePrefix + '#process',
+    'case-studies': homePrefix + 'pages/case-studies/',
+    'industries': homePrefix + 'industries/',
+    'reviews': homePrefix + '#testimonials'
+  };
+  
+  document.querySelectorAll('a[data-nav-link]').forEach(function(link) {
+    var key = link.getAttribute('data-nav-link');
+    if (linkMap[key]) {
+      link.href = linkMap[key];
+    }
+  });
+})();
+</script>

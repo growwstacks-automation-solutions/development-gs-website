@@ -85,7 +85,7 @@ const organizationSchema = {
   ],
   "contactPoint": {
     "@type": "ContactPoint",
-    "telephone": "+91-971-333-9155",
+    "telephone": (typeof SITE !== 'undefined' && SITE.phone) ? SITE.phone : "+91-971-333-9155",
     "contactType": "sales",
     "availableLanguage": ["English", "Hindi"]
   }
