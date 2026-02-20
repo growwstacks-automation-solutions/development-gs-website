@@ -2,35 +2,35 @@
 {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "GrowwStacks",
-  "legalName": "M TEC Software and Business Automation Private Limited",
+  "name": "{{SITE.name}}",
+  "legalName": "{{SITE.legalName}}",
   "description": "AI Agents, Voice AI, and Business Automation Agency. Make.com Platinum Partner.",
-  "url": "https://go.growwstacks.com",
-  "logo": "https://ik.imagekit.io/ui4mpbzoy/growwstacks-favicon-logo.png",
+  "url": "{{SITE.domain}}",
+  "logo": "{{SITE.imagekit.favicon}}",
   "address": [
     {
       "@type": "PostalAddress",
-      "streetAddress": "525 Route 73 North, Ste 104",
-      "addressLocality": "Marlton",
-      "addressRegion": "NJ",
-      "postalCode": "08053",
-      "addressCountry": "US"
+      "streetAddress": "{{SITE.addressUS.street}}",
+      "addressLocality": "{{SITE.addressUS.city}}",
+      "addressRegion": "{{SITE.addressUS.state}}",
+      "postalCode": "{{SITE.addressUS.zip}}",
+      "addressCountry": "{{SITE.addressUS.country}}"
     },
     {
       "@type": "PostalAddress",
-      "addressLocality": "Mumbai",
-      "addressRegion": "Maharashtra",
-      "addressCountry": "IN"
+      "addressLocality": "{{SITE.addressIN.city}}",
+      "addressRegion": "{{SITE.addressIN.state}}",
+      "addressCountry": "{{SITE.addressIN.country}}"
     }
   ],
   "contactPoint": {
     "@type": "ContactPoint",
-    "telephone": "+91-971-333-9155",
+    "telephone": "{{SITE.phone}}",
     "contactType": "sales"
   },
   "sameAs": [
-    "https://www.linkedin.com/company/growwstacks/",
-    "https://www.upwork.com/agencies/1631885072275017728"
+    "{{SITE.social.linkedin}}",
+    "{{SITE.social.upwork}}"
   ]
 }
 </script>

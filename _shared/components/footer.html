@@ -2,7 +2,7 @@
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <div class="footer-logo">GrowwStacks»</div>
+        <div class="footer-logo">{{SITE.name}}»</div>
         <p>AI Agents, Voice AI, and Business Automation for companies that want to scale without scaling headcount. Make.com Platinum Partner. 2000+ projects delivered.</p>
       </div>
       <div class="footer-col">
@@ -21,14 +21,14 @@
       </div>
       <div class="footer-col">
         <h4>Contact</h4>
-        <a href="mailto:hello@growwstacks.com">hello@growwstacks.com</a>
-        <a href="tel:+919713339155">+91-971-333-9155</a>
-        <a>🇺🇸 Marlton, NJ, USA</a>
-        <a>🇮🇳 Mumbai, India</a>
+        <a href="mailto:{{SITE.email}}">{{SITE.email}}</a>
+        <a href="{{SITE.phoneTel}}">{{SITE.phone}}</a>
+        <a>{{SITE.addressUS.flag}} {{SITE.addressUS.city}}, {{SITE.addressUS.state}}, USA</a>
+        <a>{{SITE.addressIN.flag}} {{SITE.addressIN.city}}, India</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 GrowwStacks (M TEC Software & Business Automation Pvt. Ltd.)</span>
+      <span>© {{YEAR}} {{SITE.name}} ({{SITE.legalName}})</span>
       <div>
         <a href="/pages/privacy-policy/">Privacy Policy</a>
         <a href="/pages/terms/">Terms of Service</a>

@@ -18,12 +18,21 @@
   const COMPONENTS = [
     { id: 'gs-navbar',       file: 'components/navbar.html' },
     { id: 'gs-footer',       file: 'components/footer.html' },
-    { id: 'gs-consult-form', file: 'components/consult-form.html' },
-    { id: 'gs-ticker',       file: 'components/platform-ticker.html' },
-    { id: 'gs-partners',     file: 'components/partner-badges.html' },
+    { id: 'gs-ticker',       file: 'components/ticker.html' },
+    { id: 'gs-partners',     file: 'components/partners.html' },
     { id: 'gs-stats',        file: 'components/stats-bar.html' },
     { id: 'gs-mid-cta',      file: 'components/mid-cta.html' },
+    { id: 'gs-hero',         file: 'components/hero.html' },
+    { id: 'gs-wwd',          file: 'components/what-we-do.html' },
+    { id: 'gs-process',      file: 'components/process.html' },
+    { id: 'gs-cases',        file: 'components/cases.html' },
+    { id: 'gs-industries',   file: 'components/industries.html' },
+    { id: 'gs-testimonials', file: 'components/testimonials.html' },
+    { id: 'gs-consult-section', file: 'components/consult-section.html' },
+    { id: 'gs-consult-form', file: 'components/consult-form.html' },
+    { id: 'gs-faq',          file: 'components/faq.html' },
     { id: 'gs-schema',       file: 'components/schema-org.html' },
+    
   ];
 
   // --- Token map: {{TOKEN}} → value ---
@@ -55,8 +64,12 @@
       '{{SITE.addressUS.street}}':        SITE.addressUS.street,
       '{{SITE.addressUS.city}}':          SITE.addressUS.city,
       '{{SITE.addressUS.state}}':         SITE.addressUS.state,
+      '{{SITE.addressUS.zip}}':           SITE.addressUS.zip,
+      '{{SITE.addressUS.country}}':       SITE.addressUS.country,
       '{{SITE.addressUS.flag}}':          SITE.addressUS.flag,
       '{{SITE.addressIN.city}}':          SITE.addressIN.city,
+      '{{SITE.addressIN.state}}':         SITE.addressIN.state,
+      '{{SITE.addressIN.country}}':       SITE.addressIN.country,
       '{{SITE.addressIN.flag}}':          SITE.addressIN.flag,
       '{{SITE.logos.make}}':              SITE.logos.make,
       '{{SITE.logos.monday}}':            SITE.logos.monday,
@@ -97,6 +110,8 @@
   function loadComponent(comp) {
     const el = document.getElementById(comp.id);
     if (!el) return; // Page doesn't use this component — skip silently
+    // If the element already has HTML, assume component is loaded — skip reloading
+    if (el.innerHTML && el.innerHTML.trim().length > 0) return;
 
     fetch(prefix + comp.file)
       .then(res => {
@@ -114,6 +129,12 @@
 
   // --- Init: load all components ---
   COMPONENTS.forEach(loadComponent);
+
+  // Second pass: some components inject placeholders for nested components
+  // Run a delayed second pass to catch nested placeholders (e.g., consult-section -> consult-form)
+  setTimeout(function() {
+    COMPONENTS.forEach(loadComponent);
+  }, 300);
 
   // --- Shared Scripts (run after DOM is ready) ---
   // Sticky nav shadow
