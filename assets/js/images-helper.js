@@ -6,6 +6,7 @@
 // Generic function to set images by data attribute
 function setupImagesByDataAttribute() {
   const allImages = document.querySelectorAll('img[data-image-key]');
+  console.log('[images-helper] setupImagesByDataAttribute found', allImages.length, 'images');
   
   allImages.forEach((img) => {
     const key = img.dataset.imageKey;
@@ -24,6 +25,9 @@ function setupImagesByDataAttribute() {
           this.src = fallback;
         };
       }
+      console.log('[images-helper] Set image', key, '→', src.substring(0, 60) + '...');
+    } else {
+      console.warn('[images-helper] Image key not found:', key);
     }
   });
 }
@@ -55,18 +59,25 @@ function getImageByKey(key) {
   // Try direct top-level access first (IMAGES, CASE_STUDIES, etc.)
   let value = window[namespace];
   
-  // Fallback to SITE.* namespaces
+  // Fallback to SITE.* namespaces (SITE.images, SITE.caseStudies, etc.)
   if (!value && typeof SITE !== 'undefined' && SITE[namespace]) {
     value = SITE[namespace];
   }
   
+  // DEFAULT: If first key is "HERO", "PARTNERS", etc., assume it's under SITE.images
+  if (!value && typeof SITE !== 'undefined' && SITE.images && SITE.images[namespace]) {
+    value = SITE.images[namespace];
+  }
+  
   if (!value) {
-    console.warn('Image namespace not found:', namespace);
+    console.warn('Image namespace not found:', namespace, '(looked in window and SITE)');
     return null;
   }
   
   try {
-    for (let k of keys) {
+    // Skip the first key since we already resolved it to 'value'
+    for (let i = 1; i < keys.length; i++) {
+      const k = keys[i];
       if (!isNaN(k)) {
         value = value[parseInt(k)];
       } else {
@@ -75,7 +86,7 @@ function getImageByKey(key) {
     }
     return value;
   } catch (e) {
-    console.warn('Image key not found:', key);
+    console.warn('Image key not found:', key, e.message);
     return null;
   }
 }

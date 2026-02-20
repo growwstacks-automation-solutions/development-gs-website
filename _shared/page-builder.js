@@ -121,6 +121,13 @@
       .then(html => {
         el.innerHTML = replaceTokens(html);
         activateScripts(el);
+        // After injecting component, trigger image setup for any data-image-key attributes
+        if (typeof setupImagesByDataAttribute === 'function') {
+          setupImagesByDataAttribute();
+        }
+        if (typeof setupLinksByDataAttribute === 'function') {
+          setupLinksByDataAttribute();
+        }
       })
       .catch(err => {
         console.warn('[page-builder] Could not load ' + comp.id + ':', err.message);
