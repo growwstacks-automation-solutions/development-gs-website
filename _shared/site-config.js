@@ -42,7 +42,7 @@ const SITE = {
   // googleAnalyticsId: 'G-XXXXXXXXXX',  // uncomment when ready
 
   // ─── Form / Webhook ───────────────────────
-  formWebhookUrl: 'YOUR_WEBHOOK_URL_HERE',
+  formWebhookUrl: 'https://hook.eu1.make.com/djyya63kealsfy8pa1va2a1ds3hi31om',
   thankYouPage: '/pages/thank-you/',
 
   // ─── Assets (ImageKit) ────────────────────
