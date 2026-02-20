@@ -102,8 +102,8 @@
 <!-- ============================= -->
 <!-- SCRIPTS                        -->
 <!-- ============================= -->
-<!-- Image Configuration -->
-<script src="./assets/js/images-config.js"></script>
+<!-- Shared config (SITE + IMAGES) + component loader -->
+<script src="./_shared/site-config.js"></script>
 <!-- Main Functionality -->
 <script src="./assets/js/index.js"></script>
 <!-- Image Helper (injects images from config) -->
@@ -111,8 +111,7 @@
 <!-- Schema Configuration -->
 <script src="./assets/js/schema.js"></script>
 
-<!-- Shared config + component loader -->
-<script src="./_shared/site-config.js"></script>
+<!-- Page builder (requires SITE / site-config.js loaded first) -->
 <script src="./_shared/page-builder.js"></script>
 
 </body>
