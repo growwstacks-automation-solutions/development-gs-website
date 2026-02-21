@@ -7,6 +7,13 @@
 (function () {
   'use strict';
 
+  // --- Auto-inject analytics-loader.js if not already present ---
+  if (!document.querySelector('script[src="/analytics-loader.js"]')) {
+    var _al = document.createElement('script');
+    _al.src = '/analytics-loader.js';
+    document.head.appendChild(_al);
+  }
+
   // --- Determine relative path to _shared/ ---
   // Works at any folder depth on Cloudflare Pages
   const pathSegments = window.location.pathname.replace(/\/+$/, '').split('/').filter(Boolean);
